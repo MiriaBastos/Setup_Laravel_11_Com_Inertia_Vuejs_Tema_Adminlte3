@@ -1,0 +1,30 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+@import '../../public/adminlte/dist/css/adminlte.css';
+@import '../../public/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.css';
+@import url('../../public/assets/fonts/sn-pro/stylesheet.css');
+
+.login-page, .register-page {
+    background: none;
+}
+
+.bgBody {
+    background: #E8ECED url('../../public/assets/images/paper-texture-background.png') no-repeat center / cover;
+}
+
+.card {
+    background: #fff url('../../public/assets/images/wall-background.png');
+    box-shadow: 0 4px 5px rgb(0 0 0 / 25%);
+    border-radius: 8px;
+}
+
+.btn-dark {
+    background: #3D3D3D;
+}
+
+.snRegular {
+    font-family: 'sn-regular', sans-serif;
+}
+

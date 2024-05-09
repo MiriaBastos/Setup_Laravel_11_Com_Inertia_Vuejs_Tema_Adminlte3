@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'sn-regular';
+    src: url('SNPro-Regular.woff2') format('woff2'),
+        url('SNPro-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'sn-bold';
+    src: url('SNPro-Bold.woff2') format('woff2'),
+        url('SNPro-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+

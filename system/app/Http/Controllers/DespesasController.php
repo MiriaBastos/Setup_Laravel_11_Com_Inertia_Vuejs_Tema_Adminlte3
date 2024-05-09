@@ -8,7 +8,8 @@ class DespesasController extends Controller
 {
     public function form()
     {
-        dd('editar formulario');
+
+        return inertia::render('Master.despesas.form');
     }
 
 }

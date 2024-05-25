@@ -23,28 +23,30 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
     <GuestLayout>
         <Head title="Email Verification" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Thanks for signing up! Before getting started, could you verify your email address by clicking on the link
-            we just emailed to you? If you didn't receive the email, we will gladly send you another.
+        <div class="mb-3 text-sm">
+            Obrigado por se inscrever! Antes de começar, você poderia verificar seu endereço de e-mail clicando no link
+            acabamos de enviar um e-mail para você? Se você não recebeu o e-mail, teremos prazer em lhe enviar outro.
         </div>
 
-        <div class="mb-4 font-medium text-sm text-green-600" v-if="verificationLinkSent">
-            A new verification link has been sent to the email address you provided during registration.
+        <div class="mb-3 text-sm" v-if="verificationLinkSent">
+            Um novo link de verificação foi enviado para o endereço de e-mail que você forneceu durante o registro.
         </div>
 
         <form @submit.prevent="submit">
-            <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Resend Verification Email
-                </PrimaryButton>
+            <div class="row">
+                <div class="col-sm-12">
+                    <PrimaryButton class="btn-block" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                        Reenviar email de verificação
+                    </PrimaryButton>
 
-                <Link
-                    :href="route('logout')"
-                    method="post"
-                    as="button"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >Log Out</Link
-                >
+                    <Link
+                        :href="route('logout')"
+                        method="post"
+                        as="button"
+                        class=""
+                        >Sair</Link
+                    >
+                </div>
             </div>
         </form>
     </GuestLayout>

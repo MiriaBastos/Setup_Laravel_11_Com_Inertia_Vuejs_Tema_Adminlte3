@@ -36,56 +36,69 @@ const submit = () => {
         <Head title="Reset Password" />
 
         <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+            <div class="row">
+                <div class="input-group mb-3">
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+                    <TextInput
+                        id="email"
+                        type="email"
+                        v-model="form.email"
+                        required
+                        autofocus
+                        autocomplete="username"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fa fa-envelope"></span>
+                        </div>
+                    </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                    <InputError class="mt-2" :message="form.errors.email" />
+                </div>
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+                <div class="input-group mb-3">
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                    <TextInput
+                        id="password"
+                        type="password"
+                        v-model="form.password"
+                        required
+                        autocomplete="new-password"
+                    />
 
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fa fa-lock"></span>
+                        </div>
+                    </div>
 
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
+                    <InputError class="mt-2" :message="form.errors.password" />
+                </div>
 
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
+                <div class="input-group mb-3">
 
-            <div class="flex items-center justify-end mt-4">
+                    <TextInput
+                        id="password_confirmation"
+                        type="password"
+                        v-model="form.password_confirmation"
+                        required
+                        autocomplete="new-password"
+                    />
+
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fa fa-lock"></span>
+                        </div>
+                    </div>
+
+                    <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                </div>
+
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Reset Password
+                    Redefinir senha
                 </PrimaryButton>
+
             </div>
         </form>
     </GuestLayout>

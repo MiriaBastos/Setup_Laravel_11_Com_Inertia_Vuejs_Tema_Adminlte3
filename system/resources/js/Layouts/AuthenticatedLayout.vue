@@ -46,11 +46,11 @@ import { Link } from '@inertiajs/vue3';
                                 </a>
                                 <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                                     <li>
-                                        <a
-                                            href="#"
+                                        <Link
+                                            :href="route('despesas.form')"
                                             class="dropdown-item">
                                             Cadastrar despesa
-                                        </a>
+                                        </Link>
                                         <li class="dropdown-divider"></li>
                                         <a
                                             href="#"
@@ -72,7 +72,7 @@ import { Link } from '@inertiajs/vue3';
                                 <span class="dropdown-header">Configurações do Sistema</span>
                                 <div class="dropdown-divider"></div>
                                 <Link
-                                    :href="route('despesas.form')"
+                                    href="#"
                                     class="dropdown-item">
                                     <i class="fas fa-envelope mr-2"></i>
                                     Cadastrar Renda
@@ -101,7 +101,9 @@ import { Link } from '@inertiajs/vue3';
                                                 Olá, {{ $page.props.auth.user.name }}
                                                 <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                                             </h3>
-                                            <Link :href="route('despesas.form')" class="link text-sm">Ver meu Perfil</Link> <br>
+                                            <div class="pt-2 pb-2">
+                                                <Link :href="route('usuarios.form')" class="link text">Ver meu Perfil</Link>
+                                            </div>
                                             <!-- :href="route('profile.edit')" -->
                                             <Link :href="route('logout')" method="post" class="link text-sm">
                                                 <i class="fa fa-clock mr-1"></i>
@@ -119,7 +121,7 @@ import { Link } from '@inertiajs/vue3';
 
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
+                    <div class="row mb-2 snRegular">
                         <slot name="header" />
                     </div>
                 </div>

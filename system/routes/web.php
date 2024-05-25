@@ -3,6 +3,7 @@
 use App\Http\Controllers\DespesasController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UsuariosController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +28,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::get('/despesas', [DespesasController::class, 'form'])->name('despesas.form');
+    Route::post('/despesas', [DespesasController::class, 'formCadastrar'])->name('despesas.cadastrar');
+    Route::get('/usuario', [UsuariosController::class, 'form'])->name('usuarios.form');
 });
 
 require __DIR__.'/auth.php';

@@ -46,17 +46,21 @@ import { Link } from '@inertiajs/vue3';
                                 </a>
                                 <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                                     <li>
-                                        <Link
-                                            :href="route('despesas.form')"
-                                            class="dropdown-item">
-                                            Cadastrar despesa
-                                        </Link>
-                                        <li class="dropdown-divider"></li>
                                         <a
                                             href="#"
                                             class="dropdown-item">
+                                            <i class="fa fa-list-alt mr-1"></i>
                                             Lista de Despesas
                                         </a>
+                                        <li class="dropdown-divider"></li>
+                                        <Link
+                                            :href="route('despesas.form')"
+                                            class="dropdown-item">
+                                            <i class="fa fa-check-circle mr-1"></i>
+                                            Cadastrar despesa
+                                        </Link>
+                                        <li class="dropdown-divider"></li>
+
                                     </li>
                                 </ul>
                             </li>

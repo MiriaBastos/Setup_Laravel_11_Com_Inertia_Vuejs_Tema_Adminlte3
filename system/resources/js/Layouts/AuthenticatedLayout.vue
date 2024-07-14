@@ -28,12 +28,12 @@ import { Link } from '@inertiajs/vue3';
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <Link
-                                    :href="route('dashboard')" :active="route().current('dashboard')"
+                                    :href="route('listagem.index')" :active="route().current('listagem.index')"
                                     class="nav-link">
                                     Dashboard
                                 </Link>
                             </li>
-                            <li class="nav-item dropdown">
+                            <!-- <li class="nav-item dropdown">
                                 <a
                                     id="dropdownSubMenu1"
                                     href="#"
@@ -63,7 +63,7 @@ import { Link } from '@inertiajs/vue3';
 
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
 

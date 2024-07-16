@@ -1,0 +1,16 @@
+<?php
+
+namespace Modules\Listagem\Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class ListagemDatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        // $this->call([]);
+    }
+}

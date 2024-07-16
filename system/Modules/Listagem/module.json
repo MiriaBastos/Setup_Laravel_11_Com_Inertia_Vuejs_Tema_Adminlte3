@@ -1,0 +1,11 @@
+{
+    "name": "Listagem",
+    "alias": "listagem",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Listagem\\Providers\\ListagemServiceProvider"
+    ],
+    "files": []
+}

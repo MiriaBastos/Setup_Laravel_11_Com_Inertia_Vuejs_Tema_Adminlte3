@@ -8,7 +8,7 @@ import Modal from '@/Components/Modal.vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
-const confirmingFormAdd = ref(true);
+const confirmingFormAdd = ref(false);
 const nomeInput = ref(null);
 
 const form = useForm({
@@ -16,7 +16,7 @@ const form = useForm({
 });
 
 
-const confirmUserDeletion = () => {
+const confirmFormAdd = () => {
     confirmingFormAdd.value = true;
 
     nextTick(() => nomeInput.value.focus());
@@ -24,7 +24,7 @@ const confirmUserDeletion = () => {
 
 // acao para adicionar um novo registro
 const cadastraLista = () => {
-    form.cadastra(route('profile.destroy'), {
+    form.cadastra(route('profile.destroyl'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onError: () => nomeInput.value.focus(),
@@ -83,7 +83,7 @@ const closeModal = () => {
         <br>
         <div class="col-sm-12">
 
-            <Link @click="confirmUserDeletion"
+            <Link @click="confirmFormAdd"
                 class="btn btn-info snRegular btn-block" style="border-radius: 20px;">
                 CRIE UMA NOVA LISTAGEM
             </Link>

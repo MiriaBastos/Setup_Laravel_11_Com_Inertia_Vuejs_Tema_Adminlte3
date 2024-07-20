@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::get('/despesas', [DespesasController::class, 'form'])->name('despesas.form');
     Route::get('/listagem', [ListagemComprasController::class, 'index'])->name('listagem.index');
+    Route::post('/listagem', [ListagemComprasController::class, 'cadastrar'])->name('listagem.cadastrar');
     // Route::get('/listagem-compras', [ListagemComprasController::class, 'getForm'])->name('listagem.form');
     Route::post('/despesas', [DespesasController::class, 'formCadastrar'])->name('despesas.cadastrar');
     Route::get('/usuario', [UsuariosController::class, 'form'])->name('usuarios.form');

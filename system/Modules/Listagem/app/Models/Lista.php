@@ -24,4 +24,10 @@ class Lista extends Model
     {
         $this->save();
     }
+
+    public static function getlistaComprasPorUser($user_id)
+    {
+        return self::where('user_id', $user_id)
+            ->get();
+    }
 }

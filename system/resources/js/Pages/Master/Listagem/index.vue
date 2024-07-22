@@ -3,9 +3,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Modal from '@/Components/Modal.vue';
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage, router } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
+
+const { props } = usePage();
 const exibirModal = ref(false);
 const nomeInput = ref(null);
 
@@ -21,13 +23,15 @@ const abrirModal = () => {
 const cadastrarLista = () => {
     form.post(route('listagem.cadastrar'), {
         preserveScroll: true,
+        preserveState: true,
+
         onSuccess: (page) => {
-            const newItem = page.props.lista;
-            if (newItem) {
-                itens.value.push(newItem);
+            if (page.props.listaCompras) {
+                itens.value = page.props.listaCompras;
             }
             closeModal();
         },
+
         onError: () => nomeInput.value.focus(),
         onFinish: () => form.reset(),
     });
@@ -38,9 +42,6 @@ const closeModal = () => {
     form.reset();
 };
 
-// Obtenha os props da página atual
-const { props } = usePage();
-const lista = ref(props.lista);
 const itens = ref(props.listaCompras);
 
 </script>
@@ -67,7 +68,7 @@ const itens = ref(props.listaCompras);
                         <Link :href="route('listagem.index', { lista_id: item.id })" class="link snRegular text-white">
                             <td style="border-radius: 20px; border: none; display: block; width: 100%;" class="bg-success mb-2">
                                 <i class="fa fa-list"></i>&nbsp;
-                                <strong>{{ item.nome }}</strong>
+                                {{ item.nome }}
                             </td><br>
                         </Link>
                     </tr>
@@ -87,6 +88,7 @@ const itens = ref(props.listaCompras);
                         class="form-control"
                         placeholder="Escreva um nome para sua listagem"
                     />
+                    <InputError :message="form.errors.nome" class="mt-2" />
                 </div>
             </div>
 
@@ -95,7 +97,11 @@ const itens = ref(props.listaCompras);
                     <button type="button" class="btn btn-danger snRegular" @click="closeModal"> Cancelar </button>
                 </div>
                 <div class="col-6 text-right">
-                    <button @click="cadastrarLista" class="btn btn-success snRegular">
+                    <button @click="cadastrarLista"
+                        class="btn btn-success snRegular"
+                        :class="{ 'disabled': form.processing }"
+                        :disabled="form.processing"
+                        >
                         Cadastrar Lista
                     </button>
                 </div>

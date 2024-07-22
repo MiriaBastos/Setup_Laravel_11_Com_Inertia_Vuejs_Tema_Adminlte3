@@ -31,8 +31,12 @@ const cadastrarLista = () => {
             }
             closeModal();
         },
-
-        onError: () => nomeInput.value.focus(),
+        onError: () => {
+            nomeInput.value.focus();
+            setTimeout(() => {
+                form.clearErrors();
+            }, 4000);
+        },
         onFinish: () => form.reset(),
     });
 };

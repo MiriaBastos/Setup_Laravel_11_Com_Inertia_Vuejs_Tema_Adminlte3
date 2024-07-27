@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Listagem\Http\Controllers\ListagemController;
+use Modules\Listagem\Http\Controllers\ListagemProdutosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,12 @@ use Modules\Listagem\Http\Controllers\ListagemController;
 
 Route::group([], function () {
     // Route::resource('listagem', ListagemController::class)->names('listagem');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/listagem', [ListagemController::class, 'index'])->name('listagem.index');
+    Route::post('/listagem', [ListagemController::class, 'cadastrar'])->name('listagem.cadastrar');
+    Route::get('/listagem-deletar/{lista_id}', [ListagemController::class, 'deletar'])->name('listagem.deletar');
+    /* LISTA DE PRODUTOS */
+    Route::get('/lista-produto', [ListagemProdutosController::class, 'index'])->name('lista-produto.index');
 });

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\DespesasController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ListagemComprasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Foundation\Application;
@@ -29,17 +28,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::get('/despesas', [DespesasController::class, 'form'])->name('despesas.form');
-    Route::get('/listagem', [ListagemComprasController::class, 'index'])->name('listagem.index');
-    Route::post('/listagem', [ListagemComprasController::class, 'cadastrar'])->name('listagem.cadastrar');
-    // Route::get('/listagem-compras', [ListagemComprasController::class, 'getForm'])->name('listagem.form');
     Route::post('/despesas', [DespesasController::class, 'formCadastrar'])->name('despesas.cadastrar');
     Route::get('/usuario', [UsuariosController::class, 'form'])->name('usuarios.form');
-});
-
-Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function () {
-    AdvancedRoute::controllers([
-        'listagem-compras' => '\App\Http\Controllers\ListagemComprasController',
-    ]);
 });
 
 require __DIR__.'/auth.php';

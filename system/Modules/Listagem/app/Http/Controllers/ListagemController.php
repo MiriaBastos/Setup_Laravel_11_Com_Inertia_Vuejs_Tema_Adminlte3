@@ -3,18 +3,48 @@
 namespace Modules\Listagem\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Inertia\Inertia;
+use Modules\Listagem\Models\Lista;
 
 class ListagemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index($lista_id = 0)
     {
-        return view('listagem::index');
+        $listaCompras = Lista::getlistaComprasPorUser(Auth::user()->id);
+
+        $vars = [
+            'listaCompras' => $listaCompras,
+            'listaId' => $lista_id
+        ];
+
+        return inertia('Master/listagem-compras/index', $vars);
+    }
+
+    public function cadastrar(Request $request)
+    {
+        $request->validate([
+            'nome' => 'required',
+        ]);
+
+        $lista = new Lista();
+        $lista->user_id = Auth::user()->id;
+        $lista->nome = $request->nome;
+
+        if($lista->save()) {
+            return to_route('listagem.index');
+        }
+
+        return to_route('listagem.index');
+    }
+
+    public function deletar($lista_id)
+    {
+        dd('deletar');
+        $lista = Lista::find($lista_id);
+        $lista->delete();
+        return to_route('listagem.index');
     }
 
 }

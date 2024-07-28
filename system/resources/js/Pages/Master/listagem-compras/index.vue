@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Modal from '@/Components/Modal.vue';
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
 const { props } = usePage();
@@ -111,7 +111,7 @@ const cancelarTemporizador = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="m-0">Lista de compras</h2>
+            <h2 class="m-0">Listagens</h2>
         </template>
 
         <div class="col-sm-12">
@@ -134,6 +134,13 @@ const cancelarTemporizador = () => {
                             @mouseleave="cancelarTemporizador">
                             <i class="fa fa-list"></i>&nbsp;
                             {{ item.nome }}
+                        </td>
+                        <td style="border: none;">
+                            <Link :href="route('lista-produto.index', { id: item.id })">
+                                <div style="background: #9d9db9; text-align: center; padding: 4px 1px; border-radius: 16px; color: #ffff; cursor: pointer;">
+                                    <i class="fa fa-arrow-circle-right"></i>
+                                </div>
+                            </Link>
                         </td>
                         <br>
                     </tr>

@@ -25,5 +25,5 @@ Route::middleware('auth')->group(function () {
     Route::put('/listagem-atualizar', [ListagemController::class, 'update'])->name('listagem.update');
     Route::delete('/listagem-excluir/{id}', [ListagemController::class, 'excluir'])->name('listagem.excluir');
     /* LISTA DE PRODUTOS */
-    Route::get('/lista-produto', [ListagemProdutosController::class, 'index'])->name('lista-produto.index');
+    Route::get('/lista-produto/{id}', [ListagemProdutosController::class, 'index'])->name('lista-produto.index');
 });

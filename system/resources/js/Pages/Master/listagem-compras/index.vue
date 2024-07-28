@@ -3,42 +3,72 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Modal from '@/Components/Modal.vue';
-import { Head, Link, useForm, usePage, router } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
-
 
 const { props } = usePage();
 const exibirModal = ref(false);
 const nomeInput = ref(null);
+const isEditing = ref(false);
+const currentItem = ref(null);
 
 const form = useForm({
     nome: '',
 });
 
-const abrirModal = () => {
+const abrirModal = (resultado = null, item = null) => {
+
+    if (resultado == 'editar') {
+        isEditing.value = true;
+        currentItem.value = item;
+        form.nome = item.nome;
+    } else {
+        isEditing.value = false;
+        form.reset();
+    }
+
     exibirModal.value = true;
     nextTick(() => nomeInput.value.focus());
 };
 
-const cadastrarLista = () => {
-    form.post(route('listagem.cadastrar'), {
-        preserveScroll: true,
-        preserveState: true,
-
-        onSuccess: (page) => {
-            if (page.props.listaCompras) {
-                itens.value = page.props.listaCompras;
-            }
-            closeModal();
-        },
-        onError: () => {
-            nomeInput.value.focus();
-            setTimeout(() => {
-                form.clearErrors();
-            }, 4000);
-        },
-        onFinish: () => form.reset(),
-    });
+const cadastrarOuEditarLista = () => {
+    if (isEditing.value && currentItem.value) {
+        form.put(route('listagem.update', { lista_id: currentItem.value.id }), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: (page) => {
+                if (page.props.listaCompras) {
+                    itens.value = page.props.listaCompras;
+                }
+                closeModal();
+            },
+            onError: () => {
+                nomeInput.value.focus();
+                setTimeout(() => {
+                    form.clearErrors();
+                }, 4000);
+            },
+            onFinish: () => form.reset(),
+        });
+    } else {
+        form.post(route('listagem.cadastrar'), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: (page) => {
+                if (page.props.listaCompras) {
+                    itens.value = page.props.listaCompras;
+                }
+                closeModal();
+            },
+            onError: () => {
+                nomeInput.value.focus();
+                setTimeout(() => {
+                    form.clearErrors();
+                }, 4000);
+            },
+            onFinish: () => form.reset(),
+        });
+    }
 };
 
 const closeModal = () => {
@@ -48,6 +78,33 @@ const closeModal = () => {
 
 const itens = ref(props.listaCompras);
 
+// Função para excluir a lista
+const excluirLista = (itemId) => {
+
+    if (!confirm('Tem certeza de que deseja excluir esta lista?')) {
+        console.log('Item nao excluido:', itemId);
+        return
+    }
+    console.log('Item excluído:', itemId);
+    return
+    router.delete(route('listagem.delete', { lista_id: itemId }), {
+        onSuccess: () => {
+            // Atualizar a lista após a exclusão
+            itens.value = itens.value.filter(item => item.id !== itemId);
+        }
+    });
+};
+
+// Variáveis para controlar o temporizador
+let pressTimer = null;
+
+const iniciarTemporizador = (itemId) => {
+    pressTimer = setTimeout(() => excluirLista(itemId), 1200);
+};
+
+const cancelarTemporizador = () => {
+    clearTimeout(pressTimer);
+};
 </script>
 
 <template>
@@ -59,7 +116,7 @@ const itens = ref(props.listaCompras);
         </template>
 
         <div class="col-sm-12">
-            <button @click="abrirModal" class="btn btn-info snRegular btn-block" style="border-radius: 20px;">
+            <button @click="abrirModal('cadastrar')" class="btn btn-info snRegular btn-block" style="border-radius: 20px;">
                 CRIE UMA NOVA LISTAGEM
             </button>
         </div>
@@ -69,12 +126,17 @@ const itens = ref(props.listaCompras);
             <table class="table" border="0">
                 <tbody>
                     <tr v-for="item in itens" :key="item.id">
-                        <Link :href="route('listagem.index', { lista_id: item.id })" class="link snRegular text-white">
-                            <td style="border-radius: 20px; border: none; display: block; width: 100%;" class="bg-success mb-2">
-                                <i class="fa fa-list"></i>&nbsp;
-                                {{ item.nome }}
-                            </td><br>
-                        </Link>
+                        <td
+                            style="border-radius: 20px; border: none; display: block; width: 100%; cursor: pointer;"
+                            class="bg-success mb-2 link snRegular text-white"
+                            @click="abrirModal('editar', item)"
+                            @mousedown="iniciarTemporizador(item.id)"
+                            @mouseup="cancelarTemporizador"
+                            @mouseleave="cancelarTemporizador">
+                            <i class="fa fa-list"></i>&nbsp;
+                            {{ item.nome }}
+                        </td>
+                        <br>
                     </tr>
                 </tbody>
             </table>
@@ -101,15 +163,17 @@ const itens = ref(props.listaCompras);
                     <button type="button" class="btn btn-danger snRegular" @click="closeModal"> Cancelar </button>
                 </div>
                 <div class="col-6 text-right">
-                    <button @click="cadastrarLista"
+                    <button @click="cadastrarOuEditarLista"
                         class="btn btn-success snRegular"
                         :class="{ 'disabled': form.processing }"
                         :disabled="form.processing"
                         >
-                        Cadastrar Lista
+                        {{ isEditing.value ? 'Editar Lista' : 'Cadastrar Lista' }}
+
                     </button>
                 </div>
             </div>
         </Modal>
     </AuthenticatedLayout>
 </template>
+

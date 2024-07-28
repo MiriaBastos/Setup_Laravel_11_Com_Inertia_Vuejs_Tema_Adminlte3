@@ -38,10 +38,27 @@ class ListagemController extends Controller
 
         return to_route('listagem.index');
     }
+    public function update(Request $request)
+    {
+        $request->validate([
+            'nome' => 'required',
+        ]);
+
+        $lista = Lista::find($request->lista_id);
+
+        $lista->user_id = $lista->user_id;
+        $lista->nome = $request->nome;
+
+        if($lista->save()) {
+            return to_route('listagem.index');
+        }
+
+        return to_route('listagem.index');
+    }
 
     public function deletar($lista_id)
     {
-        dd('deletar');
+        dd($lista_id);
         $lista = Lista::find($lista_id);
         $lista->delete();
         return to_route('listagem.index');

@@ -38,6 +38,7 @@ class ListagemController extends Controller
 
         return to_route('listagem.index');
     }
+
     public function update(Request $request)
     {
         $request->validate([
@@ -56,12 +57,10 @@ class ListagemController extends Controller
         return to_route('listagem.index');
     }
 
-    public function deletar($lista_id)
+    public function excluir($id)
     {
-        dd($lista_id);
-        $lista = Lista::find($lista_id);
+        $lista = Lista::find($id);
         $lista->delete();
         return to_route('listagem.index');
     }
-
 }

@@ -82,12 +82,11 @@ const itens = ref(props.listaCompras);
 const excluirLista = (itemId) => {
 
     if (!confirm('Tem certeza de que deseja excluir esta lista?')) {
-        console.log('Item nao excluido:', itemId);
         return
     }
-    console.log('Item excluído:', itemId);
-    return
-    router.delete(route('listagem.delete', { lista_id: itemId }), {
+
+    form.delete(route('listagem.excluir', { id: itemId }), {
+        preserveScroll: true,
         onSuccess: () => {
             // Atualizar a lista após a exclusão
             itens.value = itens.value.filter(item => item.id !== itemId);

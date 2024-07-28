@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/listagem', [ListagemController::class, 'index'])->name('listagem.index');
     Route::post('/listagem', [ListagemController::class, 'cadastrar'])->name('listagem.cadastrar');
     Route::put('/listagem-atualizar', [ListagemController::class, 'update'])->name('listagem.update');
-    Route::delete('/listagem-deletar/{lista_id}', [ListagemController::class, 'deletar'])->name('listagem.deletar');
+    Route::delete('/listagem-excluir/{id}', [ListagemController::class, 'excluir'])->name('listagem.excluir');
     /* LISTA DE PRODUTOS */
     Route::get('/lista-produto', [ListagemProdutosController::class, 'index'])->name('lista-produto.index');
 });

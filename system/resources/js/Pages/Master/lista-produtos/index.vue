@@ -4,7 +4,7 @@ import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import Modal from '@/Components/Modal.vue';
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, computed } from 'vue';
 
 const { props } = usePage();
 
@@ -16,7 +16,11 @@ const exibirModal = ref(false);
 const isEditing = ref(false);
 const currentItem = ref(null);
 
-// const itens = ref(props.listaCompras);
+const itens = ref([
+    { id: 1, nome: 'Arroz sepe', quantidade: 2, valor: 10.00, checked: false },
+    { id: 2, nome: 'Feijão Com Brasil', quantidade: 1, valor: 100.99, checked: false },
+    { id: 3, nome: 'Oleo de soja', quantidade: 3, valor: 5.19, checked: false },
+]);
 
 const form = useForm({
     nome: '',
@@ -45,6 +49,61 @@ const closeModal = () => {
     form.reset();
 };
 
+const cadastrarOuEditarLista = () => {
+    if (isEditing.value && currentItem.value) {
+        form.put(route('listagem.update', { lista_id: currentItem.value.id }), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: (page) => {
+                if (page.props.listaCompras) {
+                    itens.value = page.props.listaCompras;
+                }
+                atualizarTotais();
+                closeModal();
+            },
+            onError: () => {
+                nomeInput.value.focus();
+                setTimeout(() => {
+                    form.clearErrors();
+                }, 4000);
+            },
+            onFinish: () => form.reset(),
+        });
+    } else {
+        form.post(route('listagem.cadastrar'), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: (page) => {
+                if (page.props.listaCompras) {
+                    itens.value = page.props.listaCompras;
+                }
+                atualizarTotais();
+                closeModal();
+            },
+            onError: () => {
+                nomeInput.value.focus();
+                setTimeout(() => {
+                    form.clearErrors();
+                }, 4000);
+            },
+            onFinish: () => form.reset(),
+        });
+    }
+};
+
+const valorTotal = computed(() => {
+    return itens.value.reduce((total, item) => {
+        return total + (item.valor * item.quantidade);
+    }, 0);
+});
+
+const totalItens = computed(() => {
+    return itens.value.reduce((total, item) => total + item.quantidade, 0);
+});
+
+const toggleDone = (item) => {
+    item.checked = !item.checked; // Alterna o estado do item
+};
 </script>
 
 <template>
@@ -69,46 +128,32 @@ const closeModal = () => {
                 </h3>
             </div>
 
-            <div class="">
-                <ul class="todo-list ui-sortable" data-widget="todo-list">
-                    <li>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                            <label for="todoCheck1"></label>
-                        </div>
+            <ul class="todo-list ui-sortable" data-widget="todo-list">
+                <li v-for="item in itens" :key="item.id" :class="{ done: item.checked }">
+                    <div class="icheck-primary d-inline ml-2">
+                        <input type="checkbox"
+                                :id="`todoCheck${item.id}`"
+                                v-model="item.checked"
+                                @change="toggleDone(item)">
+                        <label :for="`todoCheck${item.id}`"></label>
+                    </div>
 
-                        <span class="text">Arroz sepe</span>
+                    <span class="text">{{ item.nome }}</span>
 
-                        <small class="badge badge-info"> x2</small>
-                        <small class="badge badge-success"> R$ 20,00</small>
+                    <small class="badge badge-info">x{{ item.quantidade }}</small>
+                    <small class="badge badge-success"> R$ {{ (item.valor * item.quantidade).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</small>
 
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo2" id="todoCheck2">
-                            <label for="todoCheck2"></label>
-                        </div>
-
-                        <span class="text">Feijão Com Brasil</span>
-
-                        <small class="badge badge-info">x1</small>
-                        <small class="badge badge-success"> R$ 100,99</small>
-
-                        <div class="tools">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash-o"></i>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                    <div style="color: #dc3545; float: right;">
+                        <i class="fas fa-edit" @click="abrirModal('editar', item)"></i>
+                    </div>
+                </li>
+            </ul>
 
             <div class="card-footer clearfix">
-                Quantidade de itens: <span class="badge badge-success">40</span> <br>
-                Valor total: <span class="badge badge-success">R$ 400,00</span>
+                <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens</span> <span class="badge badge-success">{{ totalItens }}</span>
+                <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
+                <span class="snRegular"> Total</span>&nbsp;
+                <span class="badge badge-success">R$ {{ valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</span>
                 <button @click="abrirModal('cadastrar')"
                     class="btn btn-primary float-right shadow">
                     <i class="fas fa-plus"></i>

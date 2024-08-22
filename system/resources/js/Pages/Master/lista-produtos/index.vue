@@ -1,20 +1,49 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import TextInput from '@/Components/TextInput.vue';
+import InputError from '@/Components/InputError.vue';
+import Modal from '@/Components/Modal.vue';
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
 const { props } = usePage();
 
-const currentProdutoNameInput = ref(null);
-const currentProdutoQuantidadeInput = ref(null);
-const currentProdutoValorInput = ref(null);
+const nomeInput = ref(null);
+const quantidadeInput = ref(null);
+const valorInput = ref(null);
+
+const exibirModal = ref(false);
+const isEditing = ref(false);
+const currentItem = ref(null);
+
+// const itens = ref(props.listaCompras);
 
 const form = useForm({
     nome: '',
     quantidade: '',
     valor: '',
 });
+
+const abrirModal = (resultado = null, item = null) => {
+
+if (resultado == 'editar') {
+    isEditing.value = true;
+    currentItem.value = item;
+    form.nome = item.nome;
+} else {
+    isEditing.value = false;
+    form.reset();
+}
+
+exibirModal.value = true;
+nextTick(() => nomeInput.value.focus());
+
+};
+
+const closeModal = () => {
+    exibirModal.value = false;
+    form.reset();
+};
 
 </script>
 
@@ -31,35 +60,6 @@ const form = useForm({
                 </Link>
             </div>
         </template>
-        <!-- <form action="" method="post">
-            <div class="row mb-3">
-
-                <div class="col-12">
-                    <label for="nome">Produto</label>
-                    <TextInput id="nome" ref="currentProdutoNameInput" class="form-control-sm" v-model="form.nome"
-                        type="text" autocomplete="new-nome" />
-                </div>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-5">
-                    <label for="quantidade">Quantidade</label>
-                    <TextInput id="quantidade" ref="currentProdutoQuantidadeInput" class="form-control-sm"
-                        v-model="form.quantidade" type="number" autocomplete="new-quantidade" />
-                </div>
-                <div class="col-4">
-                    <label for="valor">Valor</label>
-                    <TextInput id="valor" ref="currentProdutoValorInput" class="form-control-sm" v-model="form.valor"
-                        type="number" autocomplete="new-valor" />
-                </div>
-                <div class="col-3 mt-2">
-                    <br>
-                    <button type="submit" class="btn btn-success snRegular btn-sm">Cadastraar</button>
-                </div>
-            </div>
-        </form> -->
 
         <div class="card">
             <div class="card-header ui-sortable-handle" style="cursor: move;">
@@ -109,9 +109,70 @@ const form = useForm({
             <div class="card-footer clearfix">
                 Quantidade de itens: <span class="badge badge-success">40</span> <br>
                 Valor total: <span class="badge badge-success">R$ 400,00</span>
-                <button type="button" class="btn btn-primary float-right shadow"><i class="fas fa-plus"></i></button>
+                <button @click="abrirModal('cadastrar')"
+                    class="btn btn-primary float-right shadow">
+                    <i class="fas fa-plus"></i>
+                </button>
             </div>
 
         </div>
+
+        <Modal :show="exibirModal">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label class="form-label snRegular" for="nome">Produto</label>
+                    <TextInput
+                        id="nome"
+                        ref="nomeInput"
+                        type="text"
+                        v-model="form.nome"
+                        class="form-control"
+                    />
+                    <InputError :message="form.errors.nome" class="mt-2" />
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-6">
+                    <label class="form-label snRegular" for="quantidade">Quantidade</label>
+                    <TextInput
+                        id="quantidade"
+                        ref="quantidadeInput"
+                        type="number"
+                        v-model="form.quantidade"
+                        class="form-control"
+                    />
+                    <InputError :message="form.errors.quantidade" class="mt-2" />
+                </div>
+                <div class="col-6">
+                    <label class="form-label snRegular" for="valor">Valor</label>
+                    <TextInput
+                        id="valor"
+                        ref="valorInput"
+                        type="number"
+                        v-model="form.valor"
+                        class="form-control"
+                    />
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-6">
+                    <button type="button" class="btn btn-danger snRegular" @click="closeModal"> Cancelar </button>
+                </div>
+                <div class="col-6 text-right">
+                    <button @click="cadastrarOuEditarItem"
+                        class="btn btn-success snRegular"
+                        :class="{ 'disabled': form.processing }"
+                        :disabled="form.processing"
+                        >
+                        {{ isEditing.value ? 'Editar Item' : 'Cadastrar Item' }}
+
+                    </button>
+                </div>
+            </div>
+        </Modal>
+
     </AuthenticatedLayout>
 </template>

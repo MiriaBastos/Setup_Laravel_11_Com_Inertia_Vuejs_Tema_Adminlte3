@@ -9,19 +9,13 @@ use Modules\Listagem\Models\Produto;
 
 class ListagemProdutosController extends Controller
 {
-    public function index($id, $produto_id = null)
+    public function index($id)
     {
-        $produto = new Produto();
         $lista = Lista::find($id);
-        $produtoLista = '';
 
-        if($produto_id > 0) {
-            $produto = Produto::find($produto_id);
-            $produtoLista = Produto::getListaProdutosPorId($produto->lista_id);
-        }
+        $produtoLista = Produto::getListaProdutosPorId($id);
 
         $vars = [
-            'produto' => $produto,
             'produtoLista' => $produtoLista,
             'lista' => $lista
         ];
@@ -41,8 +35,7 @@ class ListagemProdutosController extends Controller
         $produto->salvar();
 
         return to_route('lista-produto.index', [
-            'id' => $produto->lista_id,
-            'produto_id' => $produto->id
+            'id' => $produto->lista_id
         ]);
     }
 
@@ -58,8 +51,7 @@ class ListagemProdutosController extends Controller
         $produto->salvar();
 
         return to_route('lista-produto.index', [
-            'id' => $produto->lista_id,
-            'produto_id' => $produto->id
+            'id' => $produto->lista_id
         ]);
     }
 }

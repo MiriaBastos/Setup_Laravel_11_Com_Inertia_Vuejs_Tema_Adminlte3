@@ -26,4 +26,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/listagem-excluir/{id}', [ListagemController::class, 'excluir'])->name('listagem.excluir');
     /* LISTA DE PRODUTOS */
     Route::get('/lista-produto/{id}', [ListagemProdutosController::class, 'index'])->name('lista-produto.index');
+    Route::post('/lista-produto/cadastrar', [ListagemProdutosController::class, 'cadastrar'])->name('lista-produto.cadastrar');
 });

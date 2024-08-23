@@ -17,9 +17,13 @@ const isEditing = ref(false);
 const currentItem = ref(null);
 
 const itens = ref([
-    { id: 1, nome: 'Arroz sepe', quantidade: 2, valor: 10.00, checked: false },
-    { id: 2, nome: 'Feijão Com Brasil', quantidade: 1, valor: 100.99, checked: false },
-    { id: 3, nome: 'Oleo de soja', quantidade: 3, valor: 5.19, checked: false },
+    { id: 1, nome: 'Arroz sepe', quantidade: 1, valor: 23.99, checked: false },
+    { id: 2, nome: 'Feijão Com Brasil', quantidade: 1, valor: 8.99, checked: false },
+    { id: 3, nome: 'Oleo de soja', quantidade: 2, valor: 5.19, checked: false },
+    { id: 4, nome: 'Farinha de trigo', quantidade: 1, valor: 3.79, checked: false },
+    { id: 5, nome: 'Farinha mandioca', quantidade: 1, valor: 7.19, checked: false },
+    { id: 6, nome: 'Café Forte', quantidade: 1, valor: 8.99, checked: false },
+    { id: 7, nome: 'Leite Cond. itambe', quantidade: 3, valor: 3.99, checked: false },
 ]);
 
 const form = useForm({
@@ -49,7 +53,7 @@ const closeModal = () => {
     form.reset();
 };
 
-const cadastrarOuEditarLista = () => {
+const cadastrarOuEditarItem = () => {
     if (isEditing.value && currentItem.value) {
         form.put(route('listagem.update', { lista_id: currentItem.value.id }), {
             preserveScroll: true,
@@ -70,7 +74,7 @@ const cadastrarOuEditarLista = () => {
             onFinish: () => form.reset(),
         });
     } else {
-        form.post(route('listagem.cadastrar'), {
+        form.post(route('lista-produto.cadastrar'), {
             preserveScroll: true,
             preserveState: true,
             onSuccess: (page) => {

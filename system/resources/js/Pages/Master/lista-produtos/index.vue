@@ -16,17 +16,21 @@ const exibirModal = ref(false);
 const isEditing = ref(false);
 const currentItem = ref(null);
 
-const itens = ref([
-    { id: 1, nome: 'Arroz sepe', quantidade: 1, valor: 23.99, checked: false },
-    { id: 2, nome: 'Feijão Com Brasil', quantidade: 1, valor: 8.99, checked: false },
-    { id: 3, nome: 'Oleo de soja', quantidade: 2, valor: 5.19, checked: false },
-    { id: 4, nome: 'Farinha de trigo', quantidade: 1, valor: 3.79, checked: false },
-    { id: 5, nome: 'Farinha mandioca', quantidade: 1, valor: 7.19, checked: false },
-    { id: 6, nome: 'Café Forte', quantidade: 1, valor: 8.99, checked: false },
-    { id: 7, nome: 'Leite Cond. itambe', quantidade: 3, valor: 3.99, checked: false },
-]);
+// const itens = ref([
+//     { id: 1, nome: 'Arroz sepe', quantidade: 1, valor: 23.99, checked: false },
+//     { id: 2, nome: 'Feijão Com Brasil', quantidade: 1, valor: 8.99, checked: false },
+//     { id: 3, nome: 'Oleo de soja', quantidade: 2, valor: 5.19, checked: false },
+//     { id: 4, nome: 'Farinha de trigo', quantidade: 1, valor: 3.79, checked: false },
+//     { id: 5, nome: 'Farinha mandioca', quantidade: 1, valor: 7.19, checked: false },
+//     { id: 6, nome: 'Café Forte', quantidade: 1, valor: 8.99, checked: false },
+//     { id: 7, nome: 'Leite Cond. itambe', quantidade: 3, valor: 3.99, checked: false },
+// ]);
+
+const itens = ref(props.produtoLista);
+
 
 const form = useForm({
+    lista_id: props.lista.id,
     nome: '',
     quantidade: '',
     valor: '',
@@ -38,6 +42,8 @@ if (resultado == 'editar') {
     isEditing.value = true;
     currentItem.value = item;
     form.nome = item.nome;
+    form.quantidade = item.quantidade;
+    form.valor = item.valor;
 } else {
     isEditing.value = false;
     form.reset();
@@ -55,14 +61,13 @@ const closeModal = () => {
 
 const cadastrarOuEditarItem = () => {
     if (isEditing.value && currentItem.value) {
-        form.put(route('listagem.update', { lista_id: currentItem.value.id }), {
+        form.put(route('lista-produto.update', { produto_id: currentItem.value.id }), {
             preserveScroll: true,
             preserveState: true,
             onSuccess: (page) => {
-                if (page.props.listaCompras) {
-                    itens.value = page.props.listaCompras;
+                if (page.props.produtoLista) {
+                    itens.value = page.props.produtoLista;
                 }
-                atualizarTotais();
                 closeModal();
             },
             onError: () => {
@@ -78,10 +83,9 @@ const cadastrarOuEditarItem = () => {
             preserveScroll: true,
             preserveState: true,
             onSuccess: (page) => {
-                if (page.props.listaCompras) {
-                    itens.value = page.props.listaCompras;
+                if (page.props.produtoLista) {
+                    itens.value = page.props.produtoLista;
                 }
-                atualizarTotais();
                 closeModal();
             },
             onError: () => {
@@ -167,6 +171,9 @@ const toggleDone = (item) => {
         </div>
 
         <Modal :show="exibirModal">
+
+            <input type="hidden" id="lista_id" v-model="form.lista_id">
+
             <div class="row mb-3">
                 <div class="col-12">
                     <label class="form-label snRegular" for="nome">Produto</label>

@@ -30,7 +30,7 @@ import { Link } from '@inertiajs/vue3';
                                 <Link
                                     :href="route('listagem.index')" :active="route().current('listagem.index')"
                                     class="nav-link">
-                                    Dashboard
+                                    Lista de Produtos
                                 </Link>
                             </li>
                             <!-- <li class="nav-item dropdown">

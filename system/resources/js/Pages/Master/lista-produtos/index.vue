@@ -138,20 +138,20 @@ const toggleDone = (item) => {
 
             <ul class="todo-list ui-sortable" data-widget="todo-list">
                 <li v-for="item in itens" :key="item.id" :class="{ done: item.checked }">
-                    <div class="icheck-primary d-inline ml-2">
+                    <!-- <div class="icheck-primary d-inline ml-2">
                         <input type="checkbox"
                                 :id="`todoCheck${item.id}`"
                                 v-model="item.checked"
                                 @change="toggleDone(item)">
                         <label :for="`todoCheck${item.id}`"></label>
-                    </div>
+                    </div> -->
 
                     <span class="text">{{ item.nome }}</span>
 
                     <small class="badge badge-info">x{{ item.quantidade }}</small>
                     <small class="badge badge-success"> R$ {{ (item.valor * item.quantidade).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</small>
 
-                    <div style="color: #dc3545; float: right;">
+                    <div style="color: #dc3545; float: right; cursor: pointer;">
                         <i class="fas fa-edit" @click="abrirModal('editar', item)"></i>
                     </div>
                 </li>

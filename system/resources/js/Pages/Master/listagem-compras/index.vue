@@ -115,7 +115,8 @@ const cancelarTemporizador = () => {
         </template>
 
         <div class="col-sm-12">
-            <button @click="abrirModal('cadastrar')" class="btn btn-info snRegular btn-block" style="border-radius: 20px;">
+            <button @click="abrirModal('cadastrar')" class="btn btn-adicionar-lista snRegular btn-block">
+                <i class="fa fa-plus-circle">&nbsp;</i>
                 CRIE UMA NOVA LISTAGEM
             </button>
         </div>

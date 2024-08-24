@@ -41,3 +41,13 @@
     cursor: pointer;
     padding: 8px;
 }
+.btn-adicionar-lista {
+    color: #fff;
+    background-color: #3D3D3D;
+    border-radius: 8px;
+    padding: 10px;
+}
+.btn-info:hover {
+    color: #fff;
+    background-color: #3D3D3D;
+}

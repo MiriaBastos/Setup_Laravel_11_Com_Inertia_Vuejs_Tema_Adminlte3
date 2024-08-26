@@ -69,7 +69,7 @@
   }
 
   .modal-header {
-    background-color: #007bff;
+    background-color: #3D3D3D;
     color: #fff;
   }
 
@@ -101,7 +101,7 @@
 
   @media (max-width: 767px) {
     .modal-dialog {
-      margin: 30px auto;
+      margin: 30px 10px;
     }
   }
   </style>

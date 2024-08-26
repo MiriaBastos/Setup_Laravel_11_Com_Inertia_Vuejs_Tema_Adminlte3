@@ -114,42 +114,31 @@ const cancelarTemporizador = () => {
             <h2 class="m-0">Listagens</h2>
         </template>
 
-        <div class="col-sm-12">
-            <button @click="abrirModal('cadastrar')" class="btn btn-adicionar-lista snRegular btn-block">
-                <i class="fa fa-plus-circle">&nbsp;</i>
-                CRIE UMA NOVA LISTAGEM
-            </button>
+        <button @click="abrirModal('cadastrar')" class="btn btn-adicionar-lista snRegular btn-block">
+            <i class="fa fa-plus-circle">&nbsp;</i>
+            CRIE UMA NOVA LISTAGEM
+        </button>
+
+        <br>
+
+        <div v-if="itens.length">
+            <div class="mb-2" v-for="item in itens" :key="item.id">
+                <div class="text snRegular boxList"
+                    @click="abrirModal('editar', item)"
+                    @mousedown="iniciarTemporizador(item.id)"
+                    @mouseup="cancelarTemporizador"
+                    @mouseleave="cancelarTemporizador"
+                >
+                    <i class="fa fa-edit"></i>&nbsp; {{ item.nome }}
+                </div>
+                    <Link :href="route('lista-produto.index', { id: item.id })">
+                        <i class="fa fa-list iconList"></i>
+                    </Link>
+            </div>
         </div>
 
-        <div v-if="itens.length" class="col-sm-12">
-            <br>
-            <table class="table" border="0">
-                <tbody>
-                    <tr v-for="item in itens" :key="item.id">
-                        <td
-                            style="border-radius: 20px; border: none; display: block; width: 100%; cursor: pointer;"
-                            class="bg-success mb-2 link snRegular text-white"
-                            @click="abrirModal('editar', item)"
-                            @mousedown="iniciarTemporizador(item.id)"
-                            @mouseup="cancelarTemporizador"
-                            @mouseleave="cancelarTemporizador">
-                            <i class="fa fa-list"></i>&nbsp;
-                            {{ item.nome }}
-                        </td>
-                        <td style="border: none;">
-                            <Link :href="route('lista-produto.index', { id: item.id })">
-                                <div style="background: #9d9db9; text-align: center; padding: 4px 1px; border-radius: 16px; color: #ffff; cursor: pointer;">
-                                    <i class="fa fa-arrow-circle-right"></i>
-                                </div>
-                            </Link>
-                        </td>
-                        <br>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
-        <Modal :show="exibirModal">
+        <Modal :show="exibirModal"  @close="closeModal">
             <div class="row mt-2">
                 <div class="col-12">
                     <label class="form-label snRegular">Nome da lista</label>

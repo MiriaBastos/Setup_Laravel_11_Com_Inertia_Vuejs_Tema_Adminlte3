@@ -43,11 +43,54 @@
 }
 .btn-adicionar-lista {
     color: #fff;
-    background-color: #3D3D3D;
-    border-radius: 8px;
-    padding: 10px;
+    background-color: #26592D;
+    border-radius: 5px;
+    padding: 7px;
 }
 .btn-info:hover {
     color: #fff;
     background-color: #3D3D3D;
+}
+
+.boxList {
+    background: #CA9C47;
+    cursor: pointer;
+    padding: 6px 17px;
+    border-radius: 5px;
+    display: inline-block;
+    width: 84%;
+    color: #fff;
+}
+
+.iconList {
+    color: #fff;
+    float: right;
+    cursor: pointer;
+    padding: 9px;
+    border-radius: 5px;
+    background: #3d3d3d;
+}
+
+.badge-preto {
+    color: #fff;
+    background-color: #CA9C47;
+}
+
+.badge-verde {
+    color: #fff;
+    background-color: #57902E;
+}
+
+.icheck-primary > input:first-child:not(:checked):not(:disabled):hover + label::before, .icheck-primary > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #162c3f;
+}
+
+.icheck-primary > input:first-child:checked + label::before, .icheck-primary > input:first-child:checked + input[type="hidden"] + label::before {
+    background-color: #162c3f;
+    border-color: #162c3f;
+}
+
+[class*="icheck-"] > input:first-child + label::before, [class*="icheck-"] > input:first-child + input[type="hidden"] + label::before {
+
+    border: 1px solid #675028;
 }

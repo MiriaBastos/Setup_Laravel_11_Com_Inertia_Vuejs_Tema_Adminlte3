@@ -38,20 +38,19 @@ const form = useForm({
 
 const abrirModal = (resultado = null, item = null) => {
 
-if (resultado == 'editar') {
-    isEditing.value = true;
-    currentItem.value = item;
-    form.nome = item.nome;
-    form.quantidade = item.quantidade;
-    form.valor = item.valor;
-} else {
-    isEditing.value = false;
-    form.reset();
-}
+    if (resultado == 'editar') {
+        isEditing.value = true;
+        currentItem.value = item;
+        form.nome = item.nome;
+        form.quantidade = item.quantidade;
+        form.valor = item.valor;
+    } else {
+        isEditing.value = false;
+        form.reset();
+    }
 
-exibirModal.value = true;
-nextTick(() => nomeInput.value.focus());
-
+    exibirModal.value = true;
+    nextTick(() => nomeInput.value.focus());
 };
 
 const closeModal = () => {
@@ -109,9 +108,6 @@ const totalItens = computed(() => {
     return itens.value.reduce((total, item) => total + item.quantidade, 0);
 });
 
-const toggleDone = (item) => {
-    item.checked = !item.checked; // Alterna o estado do item
-};
 </script>
 
 <template>
@@ -122,15 +118,15 @@ const toggleDone = (item) => {
         <template #header>
             <div class="col-12">
                 <h3 style="display: inline-block;">Lista de produtos</h3>
-                <Link :href="route('listagem.index')" class="btn btn-info btn-sm snRegular float-right mt-1">
-                VOLTAR
+                <Link :href="route('listagem.index')" class="btn btn-dark btn-sm snRegular float-right mt-1">
+                    VOLTAR
                 </Link>
             </div>
         </template>
 
         <div class="card">
             <div class="card-header ui-sortable-handle" style="cursor: move;">
-                <h3 class="card-title">
+                <h3 class="card-title snRegular">
                     <i class="fa fa-clipboard mr-1"></i>
                     Lista de Compras do Mês
                 </h3>
@@ -138,39 +134,37 @@ const toggleDone = (item) => {
 
             <ul class="todo-list ui-sortable" data-widget="todo-list">
                 <li v-for="item in itens" :key="item.id" :class="{ done: item.checked }">
-                    <!-- <div class="icheck-primary d-inline ml-2">
-                        <input type="checkbox"
-                                :id="`todoCheck${item.id}`"
-                                v-model="item.checked"
-                                @change="toggleDone(item)">
+
+                    <div class="icheck-primary d-inline">
+                        <input type="checkbox" value="" name="todo1" :id="`todoCheck${item.id}`">
                         <label :for="`todoCheck${item.id}`"></label>
-                    </div> -->
+                    </div>
 
-                    <span class="text">{{ item.nome }}</span>
+                    <span class="text snRegular">{{ item.nome }}</span>
 
-                    <small class="badge badge-info">x{{ item.quantidade }}</small>
-                    <small class="badge badge-success"> R$ {{ (item.valor * item.quantidade).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</small>
+                    <small class="badge badge-preto snRegular">x{{ item.quantidade }}</small>
+                    <small class="badge badge-verde snRegular"> R$ {{ (item.valor * item.quantidade).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</small>
 
-                    <div style="color: #dc3545; float: right; cursor: pointer;">
+                    <div style="color: #3d3d3d; float: right; cursor: pointer;">
                         <i class="fas fa-edit" @click="abrirModal('editar', item)"></i>
                     </div>
                 </li>
             </ul>
 
             <div class="card-footer clearfix">
-                <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens</span> <span class="badge badge-success">{{ totalItens }}</span>
+                <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens</span> <span class="badge badge-success snRegular">{{ totalItens }}</span>
                 <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
                 <span class="snRegular"> Total</span>&nbsp;
-                <span class="badge badge-success">R$ {{ valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</span>
+                <span class="badge badge-success snRegular">R$ {{ valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</span>
                 <button @click="abrirModal('cadastrar')"
-                    class="btn btn-primary float-right shadow">
+                    class="btn btn-dark float-right shadow">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
 
         </div>
 
-        <Modal :show="exibirModal">
+        <Modal :show="exibirModal" @close="closeModal">
 
             <input type="hidden" id="lista_id" v-model="form.lista_id">
 

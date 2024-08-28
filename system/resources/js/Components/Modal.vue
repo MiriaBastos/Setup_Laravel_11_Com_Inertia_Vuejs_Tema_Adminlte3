@@ -1,10 +1,10 @@
 <template>
     <Teleport to="body">
       <div class="modal fade" :class="{ 'show': show }" @click="close">
-        <div class="modal-dialog" :class="maxWidthClass">
+        <div class="modal-dialog" :class="maxWidthClass" @click.stop>
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Título da Modal</h5>
+              <h5 class="modal-title">{{ title }}</h5>
               <button type="button" class="btn-close" aria-label="Close" @click="close"></button>
             </div>
             <div class="modal-body">
@@ -23,6 +23,10 @@
     show: {
       type: Boolean,
       default: false,
+    },
+    title: {
+      type: String,
+      required: true,
     },
     maxWidth: {
       type: String,

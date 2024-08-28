@@ -193,7 +193,7 @@ const excluirItensMarcados = () => {
 
         </div>
 
-        <Modal :show="exibirModal" @close="closeModal">
+        <Modal :show="exibirModal" :title="isEditing ? 'Editar Produto' : 'Cadastrar Produto'" @close="closeModal">
 
             <input type="hidden" id="lista_id" v-model="form.lista_id">
 
@@ -246,7 +246,7 @@ const excluirItensMarcados = () => {
                         :class="{ 'disabled': form.processing }"
                         :disabled="form.processing"
                         >
-                        {{ isEditing.value ? 'Editar Item' : 'Cadastrar Item' }}
+                        {{ isEditing ? 'Editar Item' : 'Cadastrar Item' }}
 
                     </button>
                 </div>

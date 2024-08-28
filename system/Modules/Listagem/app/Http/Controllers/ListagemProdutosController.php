@@ -54,4 +54,13 @@ class ListagemProdutosController extends Controller
             'id' => $produto->lista_id
         ]);
     }
+
+    public function excluirMarcados(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        Produto::whereIn('id', $ids)->delete();
+
+        return redirect()->back()->with('produtoLista', Produto::all());
+    }
+
 }

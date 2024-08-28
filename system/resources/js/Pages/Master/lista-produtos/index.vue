@@ -16,16 +16,6 @@ const exibirModal = ref(false);
 const isEditing = ref(false);
 const currentItem = ref(null);
 
-// const itens = ref([
-//     { id: 1, nome: 'Arroz sepe', quantidade: 1, valor: 23.99, checked: false },
-//     { id: 2, nome: 'Feijão Com Brasil', quantidade: 1, valor: 8.99, checked: false },
-//     { id: 3, nome: 'Oleo de soja', quantidade: 2, valor: 5.19, checked: false },
-//     { id: 4, nome: 'Farinha de trigo', quantidade: 1, valor: 3.79, checked: false },
-//     { id: 5, nome: 'Farinha mandioca', quantidade: 1, valor: 7.19, checked: false },
-//     { id: 6, nome: 'Café Forte', quantidade: 1, valor: 8.99, checked: false },
-//     { id: 7, nome: 'Leite Cond. itambe', quantidade: 3, valor: 3.99, checked: false },
-// ]);
-
 const itens = ref(props.produtoLista);
 
 
@@ -101,12 +91,44 @@ const cadastrarOuEditarItem = () => {
 const valorTotal = computed(() => {
     return itens.value.reduce((total, item) => {
         return total + (item.valor * item.quantidade);
-    }, 0);
+    }, 0); // Inicializa com 0 para evitar undefined
 });
 
 const totalItens = computed(() => {
     return itens.value.reduce((total, item) => total + item.quantidade, 0);
 });
+
+const itensMarcados = computed(() => {
+    return itens.value.filter(item => item.checked);
+});
+
+const toggleCheck = (item) => {
+    item.checked = !item.checked;
+    Vue.set(item, 'checked', item.checked);
+};
+
+const excluirItensMarcados = () => {
+    const idsParaExcluir = itensMarcados.value.map(item => item.id);
+
+    if (idsParaExcluir.length === 0) {
+        return;
+    }
+
+    const confirmacao = confirm(`Você tem certeza que deseja excluir ${idsParaExcluir.length} item(ns)?`);
+
+    if (confirmacao) {
+        // Envie a requisição de exclusão para o backend
+        form.delete(route('lista-produto.excluir-marcados', { ids: idsParaExcluir }), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: (page) => {
+                if (page.props.produtoLista) {
+                    itens.value = page.props.produtoLista;
+                }
+            }
+        });
+    }
+};
 
 </script>
 
@@ -130,13 +152,17 @@ const totalItens = computed(() => {
                     <i class="fa fa-clipboard mr-1"></i>
                     Lista de Compras do Mês
                 </h3>
+                <button v-if="itensMarcados.length" @click="excluirItensMarcados"
+                    class="btn btn-danger btn-sm float-right ">
+                    <i class="fas fa-trash"></i>
+                </button>&nbsp;
             </div>
 
             <ul class="todo-list ui-sortable" data-widget="todo-list">
                 <li v-for="item in itens" :key="item.id" :class="{ done: item.checked }">
 
                     <div class="icheck-primary d-inline">
-                        <input type="checkbox" value="" name="todo1" :id="`todoCheck${item.id}`">
+                        <input type="checkbox" :checked="item.checked" @change="toggleCheck(item)" :id="`todoCheck${item.id}`">
                         <label :for="`todoCheck${item.id}`"></label>
                     </div>
 
@@ -152,10 +178,13 @@ const totalItens = computed(() => {
             </ul>
 
             <div class="card-footer clearfix">
+
                 <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens</span> <span class="badge badge-success snRegular">{{ totalItens }}</span>
                 <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
                 <span class="snRegular"> Total</span>&nbsp;
-                <span class="badge badge-success snRegular">R$ {{ valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</span>
+                <span class="badge badge-success snRegular">
+                    R$ {{ valorTotal ? valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00' }}
+                </span>
                 <button @click="abrirModal('cadastrar')"
                     class="btn btn-dark float-right shadow">
                     <i class="fas fa-plus"></i>

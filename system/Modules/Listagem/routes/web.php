@@ -28,4 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/lista-produto/{id}', [ListagemProdutosController::class, 'index'])->name('lista-produto.index');
     Route::post('/lista-produto/cadastrar', [ListagemProdutosController::class, 'cadastrar'])->name('lista-produto.cadastrar');
     Route::put('/lista-produto/editar', [ListagemProdutosController::class, 'update'])->name('lista-produto.update');
+    Route::delete('/lista-produto/excluir-marcados', [ListagemProdutosController::class, 'excluirMarcados'])->name('lista-produto.excluir-marcados');
+
 });

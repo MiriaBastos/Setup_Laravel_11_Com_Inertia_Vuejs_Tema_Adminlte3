@@ -25,7 +25,7 @@ return new class extends Migration
 
             $table->foreign('categoria_id')
                 ->references('id')
-                ->on('cat_categorias');
+                ->on('cli_categorias');
 
             $table->timestamps();
         });

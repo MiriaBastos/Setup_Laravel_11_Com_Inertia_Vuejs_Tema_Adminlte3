@@ -8,12 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('lis_listas', function (Blueprint $table) {
+        Schema::create('lis_setores', function (Blueprint $table) {
             $table->increments('id');
-            $table->foreignId('user_id')->index();
-            $table->string('nome');
-            $table->text('conteudo_json')->nullable();
-            $table->string('situacao')->nullable();
+            $table->string('nome', 80);
+            $table->integer('status')->default(1);
 
             $table->timestamps();
         });
@@ -21,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('lis_listas');
+        Schema::dropIfExists('lis_setores');
     }
 };

@@ -9,7 +9,7 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('cat_categorias', function (Blueprint $table) {
+        Schema::create('cli_categorias', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('nome', 200);
@@ -25,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('cat_categorias');
+        Schema::dropIfExists('cli_categorias');
     }
 };

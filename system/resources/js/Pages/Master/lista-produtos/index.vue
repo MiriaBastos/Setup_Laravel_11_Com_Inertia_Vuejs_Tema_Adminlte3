@@ -17,6 +17,7 @@ const isEditing = ref(false);
 const currentItem = ref(null);
 
 const itens = ref(props.produtoLista);
+const dropDownSetor = ref(props.dropDownSetor);
 
 
 const form = useForm({
@@ -24,6 +25,7 @@ const form = useForm({
     nome: '',
     quantidade: '',
     valor: '',
+    setor_id: '',
 });
 
 const abrirModal = (resultado = null, item = null) => {
@@ -34,6 +36,7 @@ const abrirModal = (resultado = null, item = null) => {
         form.nome = item.nome;
         form.quantidade = item.quantidade;
         form.valor = item.valor;
+        form.setor_id = item.setor_id;
     } else {
         isEditing.value = false;
         form.reset();
@@ -107,6 +110,13 @@ const toggleCheck = (item) => {
     Vue.set(item, 'checked', item.checked);
 };
 
+const truncarTexto = (texto, limite) => {
+    if (texto.length > limite) {
+        return texto.substring(0, limite) + '...';
+    }
+    return texto;
+};
+
 const excluirItensMarcados = () => {
     const idsParaExcluir = itensMarcados.value.map(item => item.id);
 
@@ -166,7 +176,7 @@ const excluirItensMarcados = () => {
                         <label :for="`todoCheck${item.id}`"></label>
                     </div>
 
-                    <span class="text snRegular">{{ item.nome }}</span>
+                    <span class="text snRegular">{{ truncarTexto(item.nome, 18) }}</span>
 
                     <small class="badge badge-preto snRegular">x{{ item.quantidade }}</small>
                     <small class="badge badge-verde snRegular"> R$ {{ (item.valor * item.quantidade).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}</small>
@@ -212,9 +222,17 @@ const excluirItensMarcados = () => {
             </div>
 
             <div class="row">
-
                 <div class="col-6">
-                    <label class="form-label snRegular" for="quantidade">Quantidade</label>
+                    <label class="form-label snRegular" for="nome">Setor</label>
+                    <select class="form-control" name="setor_id" id="setor_id" v-model="form.setor_id">
+                        <option value="" disabled>Selecione</option>
+                        <option v-for="(nome, id) in dropDownSetor" :key="id" :value="id">{{ nome }}</option>
+                    </select>
+                    <InputError :message="form.errors.nome" class="mt-2" />
+                </div>
+
+                <div class="col-2">
+                    <label class="form-label snRegular" for="quantidade">Qtd.</label>
                     <TextInput
                         id="quantidade"
                         ref="quantidadeInput"
@@ -224,7 +242,7 @@ const excluirItensMarcados = () => {
                     />
                     <InputError :message="form.errors.quantidade" class="mt-2" />
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <label class="form-label snRegular" for="valor">Valor</label>
                     <TextInput
                         id="valor"

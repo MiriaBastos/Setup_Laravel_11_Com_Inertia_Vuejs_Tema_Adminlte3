@@ -10,7 +10,7 @@ class Produto extends Model
 {
     use HasFactory;
 
-    protected $table = 'li_produtos';
+    protected $table = 'lis_produtos';
 
     public function lista()
     {

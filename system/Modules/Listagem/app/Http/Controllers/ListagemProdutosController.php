@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Listagem\Models\Lista;
 use Modules\Listagem\Models\Produto;
+use Modules\Listagem\Models\Setor;
 
 class ListagemProdutosController extends Controller
 {
@@ -14,9 +15,11 @@ class ListagemProdutosController extends Controller
         $lista = Lista::find($id);
 
         $produtoLista = Produto::getListaProdutosPorId($id);
+        $dropDownSetor = Setor::dropDownSetor();
 
         $vars = [
             'produtoLista' => $produtoLista,
+            'dropDownSetor' => $dropDownSetor,
             'lista' => $lista
         ];
 
@@ -28,6 +31,7 @@ class ListagemProdutosController extends Controller
         $produto = new Produto();
 
         $produto->lista_id    = $request->lista_id;
+        $produto->setor_id    = $request->setor_id;
         $produto->nome        = $request->nome;
         $produto->quantidade  = $request->quantidade;
         $produto->valor       = $request->valor;
@@ -44,6 +48,7 @@ class ListagemProdutosController extends Controller
         $produto = Produto::find($request->produto_id);
 
         $produto->lista_id    = $request->lista_id;
+        $produto->setor_id    = $request->setor_id;
         $produto->nome        = $request->nome;
         $produto->quantidade  = $request->quantidade;
         $produto->valor       = $request->valor;

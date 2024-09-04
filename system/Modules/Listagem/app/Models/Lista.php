@@ -11,7 +11,7 @@ class Lista extends Model
 {
     use HasFactory;
 
-    protected $table = 'li_listas';
+    protected $table = 'lis_listas';
 
     public function usuario()
     {

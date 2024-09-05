@@ -101,7 +101,7 @@ import { Link } from '@inertiajs/vue3';
 
                                 <div class="dropdown-item">
                                     <div class="media">
-                                        <img src="../../../public/assets/images/user.png" alt="User Avatar" class="img-size-50 mr-3 img-circle elevation-2">
+                                        <!-- <img src="../../../public/assets/images/user.png" alt="User Avatar" class="img-size-50 mr-3 img-circle elevation-2"> -->
                                         <div class="media-body">
                                             <h3 class="dropdown-item-title">
                                                 Olá, {{ $page.props.auth.user.name }}

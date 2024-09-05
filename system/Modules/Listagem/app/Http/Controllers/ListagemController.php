@@ -19,7 +19,7 @@ class ListagemController extends Controller
             'listaId' => $lista_id
         ];
 
-        return inertia('Master/listagem-compras/index', $vars);
+        return inertia('Master/listagem/lista-compras/index', $vars);
     }
 
     public function cadastrar(Request $request)

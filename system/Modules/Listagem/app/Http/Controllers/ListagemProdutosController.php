@@ -23,7 +23,7 @@ class ListagemProdutosController extends Controller
             'lista' => $lista
         ];
 
-        return inertia('Master/lista-produtos/index', $vars);
+        return inertia('Master/listagem/lista-produtos/index', $vars);
     }
 
     public function cadastrar(Request $request)

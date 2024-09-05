@@ -68,7 +68,8 @@ import { Link } from '@inertiajs/vue3';
                     </div>
 
                     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                        <li class="nav-item dropdown">
+
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link" data-toggle="dropdown" href="#">
                                 <i class="fa fa-cog"></i>
                             </a>
@@ -90,10 +91,11 @@ import { Link } from '@inertiajs/vue3';
                                 </a>
                                 <div class="dropdown-divider"></div>
                             </div>
-                        </li>
+                        </li> -->
+
                         <li class="nav-item dropdown show">
                             <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
-                                <i class="fa fa-user-circle"></i>
+                                <i class="fa fa-user-circle" style="font-size: 22px;"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
 

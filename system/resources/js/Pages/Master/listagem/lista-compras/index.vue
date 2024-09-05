@@ -122,23 +122,25 @@ const cancelarTemporizador = () => {
         <br>
 
         <div v-if="itens.length">
-            <div class="mb-2" v-for="item in itens" :key="item.id">
+            <div class="mb-3" v-for="item in itens" :key="item.id">
                 <div class="text snRegular boxList"
                     @click="abrirModal('editar', item)"
                     @mousedown="iniciarTemporizador(item.id)"
                     @mouseup="cancelarTemporizador"
                     @mouseleave="cancelarTemporizador"
+                    @touchstart="iniciarTemporizador(item.id)"
+                    @touchend="cancelarTemporizador"
                 >
                     <i class="fa fa-edit"></i>&nbsp; {{ item.nome }}
                 </div>
-                    <Link :href="route('lista-produto.index', { id: item.id })">
-                        <i class="fa fa-list iconList"></i>
-                    </Link>
+                <Link :href="route('lista-produto.index', { id: item.id })">
+                    <i class="fa fa-list iconList"></i>
+                </Link>
             </div>
         </div>
 
 
-        <Modal :show="exibirModal"  @close="closeModal">
+        <Modal :show="exibirModal" :title="isEditing ? 'Editar Lista' : 'Cadastrar Lista'" @close="closeModal">
             <div class="row mt-2">
                 <div class="col-12">
                     <label class="form-label snRegular">Nome da lista</label>
@@ -164,7 +166,7 @@ const cancelarTemporizador = () => {
                         :class="{ 'disabled': form.processing }"
                         :disabled="form.processing"
                         >
-                        {{ isEditing.value ? 'Editar Lista' : 'Cadastrar Lista' }}
+                        {{ isEditing ? 'Editar Lista' : 'Cadastrar Lista' }}
 
                     </button>
                 </div>

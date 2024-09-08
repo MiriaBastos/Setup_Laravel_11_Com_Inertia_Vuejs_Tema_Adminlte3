@@ -26,6 +26,7 @@ const form = useForm({
     quantidade: '',
     valor: '',
     setor_id: '',
+    check_item: '',
 });
 
 const abrirModal = (resultado = null, item = null) => {
@@ -102,12 +103,32 @@ const totalItens = computed(() => {
 });
 
 const itensMarcados = computed(() => {
-    return itens.value.filter(item => item.checked);
+    return itens.value.filter(item => item.check_item);
+});
+
+const totalValorMarcado = computed(() => {
+    return itensMarcados.value.reduce((total, item) => {
+        return total + (item.valor * item.quantidade);
+    }, 0);
+});
+
+const totalItensMarcados = computed(() => {
+    return itensMarcados.value.reduce((total, item) => total + item.quantidade, 0);
 });
 
 const toggleCheck = (item) => {
-    item.checked = !item.checked;
-    Vue.set(item, 'checked', item.checked);
+
+    form.check_item = item.check_item;
+
+    form.put(route('lista-produto.toggleCheck', { produto_id: item.id }), {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: (page) => {
+            if (page.props.produtoLista) {
+                itens.value = page.props.produtoLista;
+            }
+        }
+    });
 };
 
 const truncarTexto = (texto, limite) => {
@@ -169,10 +190,11 @@ const excluirItensMarcados = () => {
             </div>
 
             <ul class="todo-list ui-sortable" data-widget="todo-list">
-                <li v-for="item in itens" :key="item.id" :class="{ done: item.checked }">
+                <li v-for="item in itens" :key="item.id" :class="{ done: item.check_item }">
 
                     <div class="icheck-primary d-inline">
-                        <input type="checkbox" :checked="item.checked" @change="toggleCheck(item)" :id="`todoCheck${item.id}`">
+                        <input type="checkbox" v-model="item.check_item" @change="toggleCheck(item)" :id="`todoCheck${item.id}`">
+
                         <label :for="`todoCheck${item.id}`"></label>
                     </div>
 
@@ -188,14 +210,24 @@ const excluirItensMarcados = () => {
             </ul>
 
             <div class="card-footer clearfix">
-
-                <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens</span> <span class="badge badge-success snRegular">{{ totalItens }}</span>
-                <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
-                <span class="snRegular"> Total</span>&nbsp;
-                <span class="badge badge-success snRegular">
-                    R$ {{ valorTotal ? valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00' }}
-                </span>
-                <button @click="abrirModal('cadastrar')"
+                <div>
+                    <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens</span> <span class="badge badge-success snRegular">{{ totalItens }}</span>
+                    <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
+                    <span class="snRegular"> Total </span>
+                    <span class="badge badge-success snRegular">
+                        R$ {{ valorTotal ? valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00' }}
+                    </span>
+                </div>
+                <div class="mt-3">
+                    <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens Marcados</span>
+                    <span class="badge badge-success snRegular">{{ totalItensMarcados }}</span>
+                    <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
+                    <span class="snRegular">Total Marcado </span>
+                    <span class="badge badge-success snRegular">
+                        R$ {{ totalValorMarcado.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}
+                    </span>
+                </div>
+                <button style="position: absolute; right: 7px; bottom: 45px;" @click="abrirModal('cadastrar')"
                     class="btn btn-dark float-right shadow">
                     <i class="fas fa-plus"></i>
                 </button>

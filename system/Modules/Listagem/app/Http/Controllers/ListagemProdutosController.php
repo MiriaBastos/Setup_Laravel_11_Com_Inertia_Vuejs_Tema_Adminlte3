@@ -55,6 +55,16 @@ class ListagemProdutosController extends Controller
 
         $produto->salvar();
 
+
+    }
+
+    public function toggleCheck(Request $request, $produto_id)
+    {
+        $produto = Produto::find($produto_id);
+
+        $produto->check_item = $request->check_item;
+        $produto->save();
+
         return to_route('lista-produto.index', [
             'id' => $produto->lista_id
         ]);

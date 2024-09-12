@@ -4,7 +4,7 @@ import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import Modal from '@/Components/Modal.vue';
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
-import { nextTick, ref, computed } from 'vue';
+import { nextTick, ref, computed, onMounted } from 'vue';
 
 const { props } = usePage();
 
@@ -18,7 +18,6 @@ const currentItem = ref(null);
 
 const itens = ref(props.produtoLista);
 const dropDownSetor = ref(props.dropDownSetor);
-
 
 const form = useForm({
     lista_id: props.lista.id,
@@ -118,15 +117,12 @@ const totalItensMarcados = computed(() => {
 
 const toggleCheck = (item) => {
 
-    form.check_item = item.check_item;
+    form.check_item = item.check_item ? 1 : 0;
 
     form.put(route('lista-produto.toggleCheck', { produto_id: item.id }), {
         preserveScroll: true,
         preserveState: true,
         onSuccess: (page) => {
-            if (page.props.produtoLista) {
-                itens.value = page.props.produtoLista;
-            }
         }
     });
 };
@@ -161,6 +157,14 @@ const excluirItensMarcados = () => {
     }
 };
 
+onMounted(() => {
+    nextTick(() => {
+        $(function () {
+            $('[data-widget="todo-list"]').TodoList();
+        });
+    });
+});
+
 </script>
 
 <template>
@@ -190,10 +194,15 @@ const excluirItensMarcados = () => {
             </div>
 
             <ul class="todo-list ui-sortable" data-widget="todo-list">
-                <li v-for="item in itens" :key="item.id" :class="{ done: item.check_item }">
+                <li v-for="item in itens" :key="item.id">
 
                     <div class="icheck-primary d-inline">
-                        <input type="checkbox" v-model="item.check_item" @change="toggleCheck(item)" :id="`todoCheck${item.id}`">
+                        <input type="checkbox"
+                            v-model="item.check_item"
+                            @change="toggleCheck(item)"
+                            :id="`todoCheck${item.id}`"
+                            :checked="item.check_item === 1"
+                        />
 
                         <label :for="`todoCheck${item.id}`"></label>
                     </div>
@@ -208,8 +217,8 @@ const excluirItensMarcados = () => {
                     </div>
                 </li>
             </ul>
-
-            <div class="card-footer clearfix">
+            <br>
+            <div class="card-footer" style="position: relative;">
                 <div>
                     <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens</span> <span class="badge badge-success snRegular">{{ totalItens }}</span>
                     <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
@@ -218,7 +227,7 @@ const excluirItensMarcados = () => {
                         R$ {{ valorTotal ? valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00' }}
                     </span>
                 </div>
-                <div class="mt-3">
+                <div v-if="totalItensMarcados > 0" class="mt-3">
                     <i class="fa fa-cart-plus"></i> <span class="snRegular">Itens Marcados</span>
                     <span class="badge badge-success snRegular">{{ totalItensMarcados }}</span>
                     <i style="padding-left: 15px;" class="fas fa-dollar-sign"></i>
@@ -227,7 +236,7 @@ const excluirItensMarcados = () => {
                         R$ {{ totalValorMarcado.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) }}
                     </span>
                 </div>
-                <button style="position: absolute; right: 7px; bottom: 45px;" @click="abrirModal('cadastrar')"
+                <button style="position: absolute; right: 14px; bottom: 38px;" @click="abrirModal('cadastrar')"
                     class="btn btn-dark float-right shadow">
                     <i class="fas fa-plus"></i>
                 </button>

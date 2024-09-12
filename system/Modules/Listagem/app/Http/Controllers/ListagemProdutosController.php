@@ -13,17 +13,17 @@ class ListagemProdutosController extends Controller
     public function index($id)
     {
         $lista = Lista::find($id);
-
         $produtoLista = Produto::getListaProdutosPorId($id);
         $dropDownSetor = Setor::dropDownSetor();
 
-        $vars = [
-            'produtoLista' => $produtoLista,
-            'dropDownSetor' => $dropDownSetor,
-            'lista' => $lista
-        ];
-
-        return inertia('Master/listagem/lista-produtos/index', $vars);
+        return inertia('Master/listagem/lista-produtos/index', [
+            'produtoLista' => $produtoLista->map(function($produto) {
+                $produto->check_item = (bool) $produto->check_item;
+                return $produto;
+            }),
+            'lista' => $lista,
+            'dropDownSetor' => $dropDownSetor
+        ]);
     }
 
     public function cadastrar(Request $request)

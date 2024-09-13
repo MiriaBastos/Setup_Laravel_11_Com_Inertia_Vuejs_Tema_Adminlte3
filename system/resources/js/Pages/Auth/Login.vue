@@ -30,7 +30,7 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Registrar" />
+        <Head title="Logar" />
 
         <div v-if="status" class="alert alert-sm">
             {{ status }}
@@ -82,8 +82,9 @@ const submit = () => {
             <div class="row">
                 <div class="col-8">
                     <div class="icheck-primary snRegular">
-                        <!-- <Checkbox name="remember" v-model:checked="form.remember" /> -->
-                        <input type="checkbox" id="remember" name="remember">
+                        <Checkbox name="remember"
+                                 id="remember"
+                                 v-model:checked="form.remember" />
                         <label for="remember">
                             Lembre-se
                         </label>

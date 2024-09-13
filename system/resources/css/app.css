@@ -47,6 +47,11 @@
     border-radius: 5px;
     padding: 7px;
 }
+
+.btn-adicionar-lista:hover {
+    color: #fff;
+}
+
 .btn-info:hover {
     color: #fff;
     background-color: #3D3D3D;

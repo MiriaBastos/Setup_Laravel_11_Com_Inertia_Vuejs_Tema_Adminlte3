@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     plugins: [
         laravel({
-            input: 'resources/js/app.js',
+            input: ['resources/js/app.js', 'resources/css/app.css'],
             refresh: true,
         }),
         vue({
@@ -17,4 +17,8 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        sourcemap: false, // Desativa sourcemaps no modo de produção
+        chunkSizeWarningLimit: 1000, // Limita o tamanho dos chunks de JS
+    },
 });
